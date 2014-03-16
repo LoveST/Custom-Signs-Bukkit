@@ -1,8 +1,8 @@
-name: MSTCustomText
-main: LoveMST.customtext.customtext
-version: 1.0
-description:
-            Create Ready Texts in your world 
+name: MSTSignChanger
+version: 1.5
+main: LoveMST.SChanger.sChanger
+author: LoveMST
+description: Change a certain type of sign
 commands:
-  MSTCT:
-    description: take help how to play the MST-Battle !
+  SCH:
+    description: list all the command that u can use with the sign changer
