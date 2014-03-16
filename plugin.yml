@@ -1,0 +1,8 @@
+name: MSTCustomText
+main: LoveMST.customtext.customtext
+version: 1.0
+description:
+            Create Ready Texts in your world 
+commands:
+  MSTCT:
+    description: take help how to play the MST-Battle !
