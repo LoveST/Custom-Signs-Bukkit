@@ -43,7 +43,7 @@ public class ConfigManager {
 	}
 
 	public static boolean checkFile(String path, String fName) {
-		cfile = new File(ConfigManager.getPlugin().getDataFolder() + File.pathSeparator + path, fName + ".yml");
+		cfile = new File(ConfigManager.getPlugin().getDataFolder() + File.separator + path, fName + ".yml");
 		config = YamlConfiguration.loadConfiguration(cfile);
 		if (!(cfile.exists())) {
 			return false;

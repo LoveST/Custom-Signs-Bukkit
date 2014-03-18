@@ -1,13 +1,20 @@
 package LoveMST.SChanger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import Listeners.ClickSign;
+import Listeners.PlayerChat;
 
 public class sChanger extends JavaPlugin {
 
 	public static String currentLang = "english";
+	public PluginDescriptionFile d = getDescription();
+	public static TranslateManager t = TranslateManager.getInstance();
 
 	@Override
 	public void onEnable() {
@@ -17,7 +24,8 @@ public class sChanger extends JavaPlugin {
 		Managers.setHelp();
 		getConfig().options().copyDefaults(true);
 		saveConfig();
-
+		Bukkit.getPluginManager().registerEvents(new ClickSign(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerChat(), this);
 	}
 
 	@Override
@@ -45,21 +53,33 @@ public class sChanger extends JavaPlugin {
 					if (args[0].equalsIgnoreCase("help")) {
 						Managers.getHelp(p, "");
 					} else if (args[0].equalsIgnoreCase("version")) {
-
+						Managers.sendVersion(p);
+					} else if (args[0].equalsIgnoreCase("reload")) {
+						Managers.reloadConfig(p);
+					} else if (args[0].equalsIgnoreCase("copy")) {
+						Managers.copySign(p);
+					} else if (args[0].equalsIgnoreCase("copyline")) {
+						Managers.copySignLine(p, null);
+					} else if (args[0].equalsIgnoreCase("editline")){
+						Managers.editLine(p, null);
 					}
 					// check if command args is 2
 				} else if (args.length == 2) {
 					if (args[0].equalsIgnoreCase("help")) {
 						Managers.getHelp(p, args[1]);
+					} else if (args[0].equalsIgnoreCase("copyline")) {
+						Managers.copySignLine(p, args[1]);
+					} else if (args[0].equalsIgnoreCase("editline")){
+						Managers.editLine(p, args[1]);
 					}
 					// check if command args is 3
 				} else if (args.length == 3) {
 
 				} else { // check if command args is not supported
-					MessageManager.getInstance().error(p, "unknown command");
+					MessageManager.getInstance().error(p, t.get("t_UnknownCommand"));
 				}
 			} else {
-				MessageManager.getInstance().error(p, "You dont have permission to do that");
+				MessageManager.getInstance().error(p, t.get("t_NoPermission"));
 			}
 		}
 
@@ -71,11 +91,17 @@ public class sChanger extends JavaPlugin {
 			ConfigManager.makeFolder("langs");
 		}
 
-		if (ConfigManager.checkFile("langs/", getConfig().getString("currentLanguage"))) {
+		if (ConfigManager.checkFile("langs", getConfig().getString("currentLanguage"))) {
 			currentLang = getConfig().getString("currentLanguage");
+			TranslateManager.setupLangs();
 		} else {
 			TranslateManager.checkMainLangFile();
+			TranslateManager.setupLangs();
 		}
+	}
+
+	public PluginDescriptionFile getD() {
+		return d;
 	}
 
 }
